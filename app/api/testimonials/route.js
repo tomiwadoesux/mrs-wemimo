@@ -5,15 +5,25 @@ const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
 const token = process.env.SANITY_API_TOKEN;
 
-const client = createClient({
-  projectId,
-  dataset,
-  apiVersion: "2024-01-01",
-  token,
-  useCdn: false,
-});
+const client =
+  projectId && dataset && token
+    ? createClient({
+        projectId,
+        dataset,
+        apiVersion: "2024-01-01",
+        token,
+        useCdn: false,
+      })
+    : null;
 
 export async function POST(request) {
+  if (!client) {
+    return NextResponse.json(
+      { error: "Sanity configuration missing" },
+      { status: 503 }
+    );
+  }
+
   try {
     const { name, relationship, message, date } = await request.json();
 

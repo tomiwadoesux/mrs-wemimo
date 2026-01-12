@@ -5,15 +5,25 @@ const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
 const token = process.env.SANITY_API_TOKEN;
 
-const client = createClient({
-  projectId,
-  dataset,
-  apiVersion: "2024-01-01",
-  token,
-  useCdn: false,
-});
+const client =
+  projectId && dataset && token
+    ? createClient({
+        projectId,
+        dataset,
+        apiVersion: "2024-01-01",
+        token,
+        useCdn: false,
+      })
+    : null;
 
 export async function POST(request) {
+  if (!client) {
+    return NextResponse.json(
+      { error: "Sanity configuration missing" },
+      { status: 503 }
+    );
+  }
+
   try {
     const formData = await request.formData();
     const imageFile = formData.get("image");
@@ -21,7 +31,10 @@ export async function POST(request) {
     const description = formData.get("description");
 
     if (!imageFile) {
-      return NextResponse.json({ error: "Image file is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Image file is required" },
+        { status: 400 }
+      );
     }
 
     // Convert ArrayBuffer to Buffer
@@ -57,6 +70,9 @@ export async function POST(request) {
     return NextResponse.json(createdDocument, { status: 201 });
   } catch (error) {
     console.error("Error uploading to Sanity:", error);
-    return NextResponse.json({ error: "Failed to create gallery item" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to create gallery item" },
+      { status: 500 }
+    );
   }
 }
