@@ -49,7 +49,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/testimonials"
+                  href="/guestbook"
                   className="text-primary-foreground/80 hover:text-secondary transition-colors font-medium"
                 >
                   Guest Book
@@ -84,7 +84,7 @@ export function Footer() {
                 <InstagramIcon className="w-5 h-5" />
               </a>
               <a
-                href="mailto:legacy70y@gmail.com"
+                href="mailto:gbengawunmi@hotmail.com"
                 className="text-primary-foreground/60 hover:text-secondary transition-colors"
               >
                 <MailIcon className="w-5 h-5" />

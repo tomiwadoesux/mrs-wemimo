@@ -7,7 +7,11 @@ import { TestimonialsPreviewSection } from "@/components/testimonials-preview-se
 import { GalleryPreviewSection } from "@/components/gallery-preview-section";
 import { BackToTop } from "@/components/back-to-top";
 
-export default function HomePage() {
+import { getGallery } from "@/lib/sanity";
+
+export default async function HomePage() {
+  const previewImages = await getGallery(4);
+
   return (
     <>
       <Header />
@@ -16,7 +20,7 @@ export default function HomePage() {
         <BiographySection />
         <EventsSection />
         <TestimonialsPreviewSection />
-        <GalleryPreviewSection />
+        <GalleryPreviewSection images={previewImages} />
       </main>
       <Footer />
       <BackToTop />

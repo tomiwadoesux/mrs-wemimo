@@ -1,4 +1,5 @@
-import testimonial from './testimonial'
-import gallery from './gallery'
+import guestbook from "./guestbook";
+import images from "./images";
+import video from "./video";
 
-export const schemaTypes = [testimonial, gallery]
+export const schemaTypes = [guestbook, images, video];

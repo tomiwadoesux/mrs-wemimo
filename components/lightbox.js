@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import Image from "next/image"
+import Image from "next/image";
 import * as Dialog from "@radix-ui/react-dialog";
 import { XIcon } from "./icons";
 
@@ -10,9 +10,15 @@ export function Lightbox({ isOpen, onClose, image }) {
   return (
     <Dialog.Root open={isOpen} onOpenChange={onClose}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50" onClick={onClose} />
+        <Dialog.Overlay
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50"
+          onClick={onClose}
+        />
         <Dialog.Content className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="relative w-full max-w-4xl max-h-[90vh] flex flex-col items-center justify-center" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="relative w-full max-w-4xl max-h-[90vh] flex flex-col items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
             <Image
               src={image.image || image.src}
               alt={image.alt || image.description}
@@ -21,10 +27,16 @@ export function Lightbox({ isOpen, onClose, image }) {
               className="object-contain max-w-full max-h-[80vh] rounded-lg shadow-2xl"
             />
 
-            {(image.description || image.year) && (
+            {(image.description || image.alt) && (
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 rounded-b-lg text-white">
-                {image.description && <p className="text-base mb-1">{image.description}</p>}
-                {image.year && <p className="text-sm text-white/70">Year: {image.year}</p>}
+                {image.description && (
+                  <p className="text-base mb-1">{image.description}</p>
+                )}
+                {image.alt && (
+                  <p className="text-sm text-white/70 uppercase tracking-widest">
+                    {image.alt}
+                  </p>
+                )}
               </div>
             )}
 

@@ -1,182 +1,120 @@
-"use client";
+"use server";
 
-import { useState, useEffect } from "react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { BackToTop } from "@/components/back-to-top";
 import { TestimonialForm } from "@/components/testimonial-form";
 import { QuoteIcon, CalendarIcon, UserIcon } from "@/components/icons";
 import { getTestimonials } from "@/lib/sanity";
-import { testimonials as fallbackTestimonials } from "@/data/testimonials";
+import { SortButton } from "@/components/sort-button";
 
-export default function TestimonialsPage() {
-  const [displayTestimonials, setDisplayTestimonials] = useState([]);
-  const [sortByDate, setSortByDate] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchTestimonials = async () => {
-      let testimonials = [];
-      try {
-        testimonials = await getTestimonials();
-      } catch (error) {
-        console.log("Sanity fetch failed, using fallback data");
-        testimonials = fallbackTestimonials;
-      }
-
-      // Randomize testimonials order by default
-      testimonials = [...testimonials].sort(() => Math.random() - 0.5);
-      setDisplayTestimonials(testimonials);
-      setIsLoading(false);
-    };
-
-    fetchTestimonials();
-  }, []);
-
-  const sortedTestimonials = sortByDate
-    ? [...displayTestimonials].sort((a, b) => {
-        const parseDate = (dateStr) => {
-          if (!dateStr) return new Date(0);
-          const [month, day, year] = dateStr.split("/");
-          // Convert YY to YYYY (24 -> 2024, 25 -> 2025, etc.)
-          const fullYear =
-            parseInt(year) > 50 ? 1900 + parseInt(year) : 2000 + parseInt(year);
-          return new Date(fullYear, parseInt(month) - 1, parseInt(day));
-        };
-        return parseDate(b.date) - parseDate(a.date);
-      })
-    : displayTestimonials;
+export default async function TestimonialsPage({ searchParams }) {
+  const { sort } = (await searchParams) || { sort: "newest" };
+  const testimonials = await getTestimonials(sort);
 
   return (
     <>
       <Header />
       <main>
-        {/* Hero Banner */}
-        <section className="relative pt-32 pb-20 bg-primary overflow-hidden">
-          <div className="container mx-auto px-6 relative">
-            <div className="flex items-center gap-2 text-secondary mb-4">
-              <QuoteIcon className="w-5 h-5" />
-              <span className="text-sm uppercase tracking-wider">
-                Guest Book
+        {/* Aesthetic Hero Banner */}
+        <section className="relative pt-40 pb-24 bg-primary overflow-hidden">
+          {/* Abstract background element */}
+          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-50" />
+          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 bg-accent/5 rounded-full blur-3xl opacity-50" />
+
+          <div className="container mx-auto px-6 relative z-10 text-center">
+            <div className="inline-flex items-center gap-2 text-secondary mb-6 px-4 py-1.5 rounded-full bg-secondary/10 border border-secondary/20 backdrop-blur-sm">
+              <QuoteIcon className="w-4 h-4" />
+              <span className="text-xs font-semibold uppercase tracking-[0.2em]">
+                Guestbook
               </span>
             </div>
-            <h1 className="font-serif text-4xl md:text-6xl text-primary-foreground mb-4 text-balance">
-              Guest Book
+            <h1 className="font-serif text-5xl md:text-7xl text-primary-foreground mb-6 overflow-hidden">
+              <span className="inline-block animate-fade-in-up">
+                Voices of Love
+              </span>
             </h1>
-            <p className="text-primary-foreground/70 text-xl max-w-2xl">
-              Heartfelt words from those whose lives were touched by Omowunmi.
+            <p
+              className="text-primary-foreground/80 text-xl font-light max-w-2xl mx-auto leading-relaxed animate-fade-in-up"
+              style={{ animationDelay: "0.2s" }}
+            >
+              Heartfelt words, cherished memories, and tributes from those whose
+              lives were touched by Omowunmi Oludipe Oyawemimo.
             </p>
           </div>
         </section>
 
-        <section id="share" className="py-24 bg-background">
-          <div className="container mx-auto px-6">
-            <div className="max-w-2xl mx-auto">
-              <div className="text-center mb-12">
-                <p className="text-secondary text-sm uppercase tracking-[0.2em] mb-4">
-                  Memories Live On
-                </p>
-                <h2 className="font-serif text-3xl md:text-4xl text-foreground mb-4 text-balance">
-                  Share a Memory of Omowunmi
-                </h2>
-                <p className="text-muted-foreground">
-                  Your words help keep her memory alive for future generations.
-                </p>
+        {/* Form Section - Elegant & Non-intrusive */}
+        <section id="share" className="py-16 -mt-10 relative z-20">
+          <div className="container mx-auto px-6 max-w-4xl">
+            <div className="bg-background rounded-3xl shadow-2xl p-1 border border-border/50">
+              {/* We wrap the form to give it that card look, components/testimonial-form.js has its own styling but we might want to check it later if it conflicts. 
+                   The form component already has a card style, but putting it inside another white box might be double-boxing.
+                   Actually, looking at the previous code, the form component *is* the card. 
+                   So we should just place it here, maybe without the extra wrapper or adjust the wrapper.
+                   The Gallery form was bare, so I added a wrapper. The Testimonial form has a card style internal div.
+                   Let's use a wrapper but maybe simpler to blend it.
+               */}
+              <div className="rounded-3xl overflow-hidden bg-background">
+                <TestimonialForm />
               </div>
-              <TestimonialForm />
             </div>
           </div>
         </section>
 
-        <section className="py-24 bg-background">
+        <section className="py-20 bg-background">
           <div className="container mx-auto px-6">
-            <div className="mb-16">
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                <div>
-                  <h2 className="font-serif text-3xl md:text-4xl text-foreground mb-3 font-bold">
-                    Voices of Love & Gratitude
-                  </h2>
-                  <p className="text-muted-foreground text-lg max-w-3xl">
-                    Over {displayTestimonials.length} people have shared their
-                    heartfelt memories and tributes. Read below to discover how
-                    Omowunmi's life touched the hearts of her family, friends,
-                    colleagues, and the community she served.
-                  </p>
-                </div>
-                <button
-                  onClick={() => setSortByDate(!sortByDate)}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-secondary/30 bg-secondary/5 hover:bg-secondary/10 transition-colors text-foreground font-medium whitespace-nowrap"
-                >
-                  <CalendarIcon className="w-4 h-4" />
-                  {sortByDate ? "Random Order" : "Newest First"}
-                </button>
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+              <div className="flex flex-col">
+                <div className="w-12 h-1 bg-secondary mb-4"></div>
+                <h2 className="font-serif text-3xl md:text-4xl text-foreground">
+                  Community Tributes
+                </h2>
+                <p className="text-muted-foreground mt-2">
+                  Reading {testimonials.length} beautiful memories
+                </p>
               </div>
+              <SortButton
+                currentSort={(await searchParams)?.sort || "newest"}
+              />
             </div>
 
             {/* Masonry Grid */}
             <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-              {sortedTestimonials.map((testimonial) => (
+              {testimonials.map((testimonial) => (
                 <div
-                  key={testimonial._id || testimonial.id}
-                  className="break-inside-avoid bg-gradient-to-br from-card to-card/50 rounded-2xl p-7 shadow-lg border border-border/50 hover:shadow-xl hover:border-secondary transition-all backdrop-blur-sm group"
+                  key={testimonial._id}
+                  className="break-inside-avoid bg-card rounded-2xl p-8 shadow-lg border border-border/50 hover:shadow-xl hover:border-secondary/50 transition-all duration-300 group hover:-translate-y-1"
                 >
-                  <QuoteIcon className="w-8 h-8 text-secondary/40 mb-4 group-hover:text-secondary/60 transition-colors" />
-                  <p className="text-foreground leading-relaxed mb-6 text-lg">
-                    {testimonial.message}
+                  <QuoteIcon className="w-8 h-8 text-secondary/40 mb-6 group-hover:text-secondary transition-colors" />
+                  <p className="text-foreground/90 leading-relaxed mb-8 text-lg font-light">
+                    &ldquo;{testimonial.message}&rdquo;
                   </p>
-                  <div className="pt-5 border-t border-border/50">
-                    <p className="font-semibold text-foreground mb-3">
-                      {testimonial.name}
-                    </p>
-                    <div className="flex flex-col gap-2 text-xs text-muted-foreground font-medium">
-                      <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-secondary/10 rounded-lg w-fit">
-                        <UserIcon className="w-3.5 h-3.5 text-secondary" />
-                        {testimonial.relationship}
-                      </span>
-                      <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-muted rounded-lg w-fit">
-                        <CalendarIcon className="w-3.5 h-3.5 text-muted-foreground" />
-                        {testimonial.date}
-                      </span>
+
+                  <div className="pt-6 border-t border-border/40 flex items-start justify-between gap-4">
+                    <div>
+                      <h4 className="font-serif font-semibold text-lg text-foreground mb-1">
+                        {testimonial.name}
+                      </h4>
+                      <div className="flex flex-wrap gap-2 text-xs text-muted-foreground font-medium">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-secondary/5 text-secondary rounded-full">
+                          <UserIcon className="w-3 h-3" />
+                          {testimonial.relationship}
+                        </span>
+                      </div>
                     </div>
+                    <span className="text-xs text-muted-foreground/60 font-mono whitespace-nowrap mt-1">
+                      {testimonial.date}
+                    </span>
                   </div>
                 </div>
               ))}
-            </div>
 
-            {/* Impact Statistics */}
-            <div className="mt-20 pt-16 border-t border-border">
-              <h3 className="font-serif text-2xl md:text-3xl text-foreground mb-12 text-center">
-                The Impact of Her Life
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="text-center p-6 rounded-lg bg-secondary/5 border border-secondary/10">
-                  <div className="text-4xl font-bold text-secondary mb-2">
-                    {displayTestimonials.length}
-                  </div>
-                  <p className="text-muted-foreground font-medium">
-                    Testimonies Shared
-                  </p>
+              {testimonials.length === 0 && (
+                <div className="col-span-full py-20 text-center text-muted-foreground italic">
+                  Be the first to share a memory.
                 </div>
-                <div className="text-center p-6 rounded-lg bg-secondary/5 border border-secondary/10">
-                  <div className="text-4xl font-bold text-secondary mb-2">
-                    {
-                      new Set(displayTestimonials.map((t) => t.relationship))
-                        .size
-                    }
-                  </div>
-                  <p className="text-muted-foreground font-medium">
-                    Circles of Influence
-                  </p>
-                </div>
-                <div className="text-center p-6 rounded-lg bg-secondary/5 border border-secondary/10">
-                  <div className="text-4xl font-bold text-secondary mb-2">
-                    ∞
-                  </div>
-                  <p className="text-muted-foreground font-medium">
-                    Lasting Legacy
-                  </p>
-                </div>
-              </div>
+              )}
             </div>
           </div>
         </section>

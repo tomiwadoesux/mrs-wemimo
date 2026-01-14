@@ -7,8 +7,8 @@ import Link from "next/link";
 import { galleryImages } from "@/data/gallery";
 import { Lightbox } from "./lightbox";
 
-export function GalleryPreviewSection() {
-  const previewImages = [];
+export function GalleryPreviewSection({ images = [] }) {
+  const previewImages = images;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -25,15 +25,13 @@ export function GalleryPreviewSection() {
   return (
     <section className="py-24 bg-background">
       <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-end justify-between mb-12 gap-6">
-          <div className="text-center md:text-left">
-            <p className="text-secondary text-sm uppercase tracking-[0.2em] mb-4">
-              Life in Pictures
-            </p>
-            <h2 className="font-serif text-4xl md:text-5xl text-foreground text-balance">
-              Captured Moments
-            </h2>
-          </div>
+        <div className="flex flex-col items-center justify-center mb-12 text-center">
+          <p className="text-secondary text-sm uppercase tracking-[0.2em] mb-4">
+            Life in Pictures
+          </p>
+          <h2 className="font-serif text-4xl md:text-5xl text-foreground text-balance mb-6">
+            Captured Moments
+          </h2>
           <Link
             href="/gallery"
             className="hidden md:inline-flex items-center gap-2 text-foreground hover:text-secondary transition-colors group"
@@ -44,15 +42,15 @@ export function GalleryPreviewSection() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-12">
-          {previewImages.map((image) => (
+          {previewImages.map((item) => (
             <button
-              key={image.id}
-              onClick={() => openModal(image)}
+              key={item._id}
+              onClick={() => openModal(item)}
               className="aspect-square bg-card rounded-lg overflow-hidden relative group cursor-pointer"
             >
               <Image
-                src={image.src}
-                alt={image.alt}
+                src={item.image}
+                alt={item.alt || "Gallery Image"}
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
               />
@@ -64,7 +62,11 @@ export function GalleryPreviewSection() {
         <Lightbox
           isOpen={isModalOpen}
           onClose={closeModal}
-          image={selectedImage}
+          image={
+            selectedImage
+              ? { ...selectedImage, src: selectedImage.image }
+              : null
+          }
         />
 
         <div className="text-center md:hidden">

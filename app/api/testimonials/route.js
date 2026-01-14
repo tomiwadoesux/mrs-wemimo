@@ -35,7 +35,7 @@ export async function POST(request) {
     }
 
     const doc = {
-      _type: "testimonial",
+      _type: "guestbook",
       name,
       relationship,
       message,
