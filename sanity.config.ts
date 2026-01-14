@@ -14,7 +14,7 @@ if (!projectId || !dataset) {
 
 export default defineConfig({
   name: "default",
-  title: "Timothy Adebayo Adeku Memorial",
+  title: "In Loving Memory of Omowunmi Oludipe Oyawemimo",
   projectId,
   dataset,
   basePath: "/studio",
