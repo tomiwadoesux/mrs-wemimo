@@ -3,31 +3,35 @@
 import { useEffect, useState } from "react";
 import { YoutubeIcon } from "./icons";
 
-const SLIDES = ["/hero.webp", "/images/001.jpeg", "/images/002.jpeg"];
+const DEFAULT_SLIDES = ["/hero.webp", "/images/001.jpeg", "/images/002.jpeg"];
 
-export function HeroSection() {
+export function HeroSection({ slides }) {
+  // Use provided slides or fallback to defaults
+  const activeSlides = slides && slides.length > 0 ? slides : DEFAULT_SLIDES;
+
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [startAnimate, setStartAnimate] = useState(false);
 
   useEffect(() => {
     setIsLoaded(true);
-    const timer = setTimeout(() => setStartAnimate(true), 100);
+    // Slight delay to trigger the initial zoom animation
+    const animateTimer = setTimeout(() => setStartAnimate(true), 100);
 
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
+      setCurrentSlide((prev) => (prev + 1) % activeSlides.length);
     }, 7000); // Change slide every 7 seconds
 
     return () => {
       clearInterval(interval);
-      clearTimeout(timer);
+      clearTimeout(animateTimer);
     };
-  }, []);
+  }, [activeSlides.length]);
 
   return (
     <section className="relative h-screen min-h-[600px] overflow-hidden bg-black">
       {/* Background Slideshow with Alternating Ken Burns Effect */}
-      {SLIDES.map((src, index) => {
+      {activeSlides.map((src, index) => {
         const isActive = currentSlide === index;
         const isEven = index % 2 === 0;
 
@@ -40,13 +44,17 @@ export function HeroSection() {
           >
             <div
               className={`absolute inset-0 bg-cover bg-center w-full h-full transform transition-transform duration-[10000ms] ease-linear ${
-                isActive
+                !startAnimate
                   ? isEven
-                    ? "scale-110" // Even: Zoom In (1.0 -> 1.1)
-                    : "scale-100" // Odd: Zoom Out (1.1 -> 1.0)
-                  : isEven
-                    ? "scale-100" // Reset for next time
-                    : "scale-110" // Reset for next time
+                    ? "scale-100" // Initial state: Even starts normal
+                    : "scale-110" // Odd starts zoomed in (so it can zoom out)
+                  : isActive
+                    ? isEven
+                      ? "scale-110" // Active Even: Zoom In
+                      : "scale-100" // Active Odd: Zoom Out
+                    : isEven
+                      ? "scale-100" // Inactive Even: Reset to normal
+                      : "scale-110" // Inactive Odd: Reset to zoomed
               }`}
               style={{
                 backgroundImage: `url('${src}')`,
@@ -62,7 +70,7 @@ export function HeroSection() {
       {/* Content */}
       <div className="relative z-20 h-full flex flex-col items-center justify-center text-center px-6">
         <div
-          className={`max-w-5xl transition-all duration-1000 ${
+          className={`max-w-5xl transition-all duration-700 ${
             isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >

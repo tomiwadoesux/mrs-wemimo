@@ -18,12 +18,18 @@ export default async function HomePage() {
     ? allImages.sort(() => 0.5 - Math.random()).slice(0, 3)
     : [];
 
+  // Get latest 3 images for Hero slideshow
+  const heroSlides = allImages
+    ? allImages.slice(0, 3).map((item) => item.image)
+    : [];
+
   return (
     <>
       <Header />
       <main>
-        <HeroSection />
+        <HeroSection slides={heroSlides} />
         <BiographySection />
+
         <EventsSection />
         <TestimonialsPreviewSection />
         <GalleryPreviewSection images={previewImages} />
