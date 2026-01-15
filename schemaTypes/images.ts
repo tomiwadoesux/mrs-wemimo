@@ -15,25 +15,21 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "description",
-      title: "Description",
+      name: "title",
+      title: "Title",
       type: "string",
-      description: "Optional description of the image",
+      description: "Optional title for the image",
     }),
-    defineField({
-      name: "year",
-      title: "Year",
-      type: "number",
-      description: "Optional year when the photo was taken",
-    }),
+
     defineField({
       name: "alt",
       title: "Alt Text",
       type: "string",
-      description: "Descriptive text for accessibility",
-      initialValue: "Timothy Adebayo Adeku Memorial",
+      description: "Descriptive text for accessibility (optional)",
+      initialValue: "",
     }),
   ],
+
   preview: {
     select: {
       media: "image",

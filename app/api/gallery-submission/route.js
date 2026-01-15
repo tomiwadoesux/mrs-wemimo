@@ -1,5 +1,6 @@
 import { createClient } from "@sanity/client";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
@@ -27,13 +28,11 @@ export async function POST(request) {
   try {
     const formData = await request.formData();
     const file = formData.get("file");
-    const title = formData.get("title") || "Untitled Memory";
-    const description = ""; // Description removed from form
+    const title = formData.get("title") || "";
 
     if (!file) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
-    // Title check removed as it defaults to Untitled Memory
 
     // 20MB limit check (already checked on client, but good to double check)
     if (file.size > 20 * 1024 * 1024) {
@@ -62,8 +61,8 @@ export async function POST(request) {
     if (isVideo) {
       doc = {
         _type: "video",
-        title: title,
-        description: description || "",
+        title: title || "Untitled Video",
+        description: "",
         videoFile: {
           _type: "file",
           asset: {
@@ -76,13 +75,8 @@ export async function POST(request) {
     } else {
       doc = {
         _type: "images",
-        // images schema uses 'alt' usually for title/alt text, but we don't have a title field in the schema we created earlier.
-        // Let's check schema/images.ts. It has 'description', 'year', 'alt'.
-        // and schema/gallery.ts (old) had description, year, alt, caption.
-        // The user input 'title' maps best to 'alt' or we should add a title field.
-        // For now, let's map title to 'alt' and 'description' to 'description'.
-        alt: title,
-        description: description || "",
+        title: title,
+        alt: title, // Use title as alt text
         image: {
           _type: "image",
           asset: {
@@ -90,11 +84,14 @@ export async function POST(request) {
             _ref: asset._id,
           },
         },
-        year: new Date().getFullYear(),
       };
     }
 
     const createdDoc = await client.create(doc);
+
+    // Revalidate pages to show new content immediately
+    revalidatePath("/gallery");
+    revalidatePath("/videos");
 
     return NextResponse.json(
       { message: "Upload successful", document: createdDoc },

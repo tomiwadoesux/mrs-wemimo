@@ -32,21 +32,15 @@ export function GalleryPreviewSection({ images = [] }) {
           <h2 className="font-serif text-4xl md:text-5xl text-foreground text-balance mb-6">
             Captured Moments
           </h2>
-          <Link
-            href="/gallery"
-            className="hidden md:inline-flex items-center gap-2 text-foreground hover:text-secondary transition-colors group"
-          >
-            View Full Gallery
-            <ArrowRightIcon className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-12">
+        {/* Gallery Grid with Mobile Horizontal Scroll */}
+        <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 sm:grid sm:grid-cols-2 md:grid-cols-3 sm:pb-0 mb-12 scrollbar-hide -mx-6 px-6 sm:mx-0 sm:px-0">
           {previewImages.map((item) => (
             <button
               key={item._id}
               onClick={() => openModal(item)}
-              className="aspect-square bg-card rounded-lg overflow-hidden relative group cursor-pointer"
+              className="flex-shrink-0 w-[85vw] sm:w-auto h-[85vw] sm:h-auto snap-center aspect-square bg-card rounded-lg overflow-hidden relative group cursor-pointer"
             >
               <Image
                 src={item.image}
@@ -69,12 +63,13 @@ export function GalleryPreviewSection({ images = [] }) {
           }
         />
 
-        <div className="text-center md:hidden">
+        <div className="text-center">
           <Link
             href="/gallery"
-            className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-sm text-sm uppercase tracking-wider hover:bg-primary/90 transition-colors"
+            className="inline-flex items-center gap-2 bg-secondary text-secondary-foreground px-10 py-4 rounded-lg text-sm uppercase tracking-wider hover:bg-secondary/90 transition-all hover:scale-105 shadow-md"
           >
-            Slide to View
+            See More
+            <ArrowRightIcon className="w-4 h-4" />
           </Link>
         </div>
       </div>

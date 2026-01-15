@@ -1,5 +1,6 @@
 import { createClient } from "@sanity/client";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
@@ -43,6 +44,9 @@ export async function POST(request) {
     };
 
     const createdDocument = await client.create(doc);
+
+    // Revalidate guestbook page
+    revalidatePath("/guestbook");
 
     return NextResponse.json(createdDocument, { status: 201 });
   } catch (error) {

@@ -52,6 +52,7 @@ export function GallerySubmissionForm() {
       setIsSuccess(true);
       setFormData({ title: "" });
       setFile(null);
+
       // Reset success message after 5 seconds
       setTimeout(() => setIsSuccess(false), 5000);
     } catch (error) {
@@ -105,7 +106,7 @@ export function GallerySubmissionForm() {
                 setFormData({ ...formData, title: e.target.value })
               }
               className="w-full px-4 py-3.5 bg-background border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition-all text-foreground placeholder:text-muted-foreground/60"
-              placeholder="e.g., Birthday Celebration 2020"
+              placeholder="e.g., Birthday Celebration"
             />
           </div>
 

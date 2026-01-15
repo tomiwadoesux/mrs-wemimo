@@ -1,8 +1,8 @@
 import { createClient } from "next-sanity";
 import imageUrlBuilder from "@sanity/image-url";
 
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
-const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "j1pqx03r";
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
 
 // Gracefully handle missing configuration
 const isConfigured = !!projectId && !!dataset;
@@ -65,6 +65,7 @@ export async function getGallery(limit = null) {
   const query = `*[_type == "images"] | order(_createdAt desc) ${limitQuery} {
     _id,
     "image": image.asset->url,
+    title,
     description,
     year,
     alt,

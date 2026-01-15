@@ -38,7 +38,9 @@ export function GalleryGrid({ gallery }) {
                 <img
                   src={item.image}
                   alt={item.alt || "Memory"}
-                  className="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-105"
                 />
 
                 {/* Overlay */}
@@ -49,11 +51,11 @@ export function GalleryGrid({ gallery }) {
                         {item.description}
                       </p>
                     )}
-                    {item.alt && (
+                    {item.title && (
                       <div className="flex items-center gap-2 mt-2">
                         <div className="h-px w-8 bg-white/50"></div>
                         <p className="text-white/80 text-xs tracking-widest font-mono uppercase">
-                          {item.alt}
+                          {item.title}
                         </p>
                       </div>
                     )}

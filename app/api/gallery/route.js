@@ -1,5 +1,6 @@
 import { createClient } from "@sanity/client";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
@@ -47,7 +48,7 @@ export async function POST(request) {
 
     // 2. Create the gallery document
     const doc = {
-      _type: "gallery",
+      _type: "images", // Fixed: Matches schema type "images"
       image: {
         _type: "image",
         asset: {
@@ -66,6 +67,9 @@ export async function POST(request) {
     }
 
     const createdDocument = await client.create(doc);
+
+    // Revalidate the gallery page to show the new image immediately
+    revalidatePath("/gallery");
 
     return NextResponse.json(createdDocument, { status: 201 });
   } catch (error) {

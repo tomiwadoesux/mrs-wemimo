@@ -44,6 +44,7 @@ export default async function VideosPage() {
                     <video
                       src={item.videoUrl}
                       controls
+                      preload="none"
                       className="w-full h-full object-cover"
                       poster="/placeholder-video-poster.jpg" // You might want to add a poster field to sanity schema later
                     />
