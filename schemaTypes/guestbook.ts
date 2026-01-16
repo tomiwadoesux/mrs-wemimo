@@ -13,7 +13,7 @@ export default defineType({
     }),
     defineField({
       name: "relationship",
-      title: "Relationship to Pastor Bayo",
+      title: "Relationship to Omowunmi Oludipe Oyawemimo",
       type: "string",
       description: "e.g., Family, Friend, Colleague, etc.",
       validation: (Rule) => Rule.required(),

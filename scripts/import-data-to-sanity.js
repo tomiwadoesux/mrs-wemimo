@@ -144,7 +144,7 @@ async function importGallery() {
         _type: "images",
         description: "",
         year: parseInt(image.date) || 2024,
-        alt: image.alt || "Timothy Adebayo Adeku Memorial",
+        alt: image.alt || "Omowunmi Oludipe Oyawemimo Memorial",
         image: {
           _type: "image",
           asset: {

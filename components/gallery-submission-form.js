@@ -72,7 +72,8 @@ export function GallerySubmissionForm() {
         Contribute to the Gallery
       </h3>
       <p className="text-muted-foreground text-base mb-8 leading-relaxed">
-        Share your photos or videos of Pastor Bayo. (Max size: 20MB)
+        Share your photos or videos of Omowunmi Oludipe Oyawemimo. (Max size:
+        20MB)
       </p>
 
       {isSuccess ? (

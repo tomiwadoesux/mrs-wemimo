@@ -1,6 +1,6 @@
 # Sanity Studio for G-Paa
 
-This is the Sanity Studio for managing content for the Timothy Adebayo Adeku Memorial website.
+This is the Sanity Studio for managing content for the Omowunmi Oludipe Oyawemimo Memorial website.
 
 ## Getting Started
 
@@ -32,13 +32,15 @@ The studio will be available at `http://localhost:3333`
 This studio manages two content types:
 
 ### Testimonials
+
 - **Name**: Person's name
-- **Relationship**: Relationship to Pastor Bayo
-- **Message**: Memory or message about Pastor Bayo
+- **Relationship**: Relationship to Omowunmi Oludipe Oyawemimo
+- **Message**: Memory or message about Omowunmi Oludipe Oyawemimo
 - **Date**: Date submitted (format: mm/dd/yy)
 - **Image**: Optional profile picture
 
 ### Gallery Images
+
 - **Title**: Image title
 - **Image**: The photograph
 - **Caption**: Optional description

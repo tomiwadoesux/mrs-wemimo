@@ -42,7 +42,7 @@ export const galleryImages = [
   {
     id: 6,
     src: "/006.jpg",
-    alt: "Omowunmi Oludipe Oyawemimo Memorial - With wife Joan",
+    alt: "Omowunmi Oludipe Oyawemimo Memorial - With family",
     description: "Together Forever",
     caption: "Omowunmi and her beloved family",
     date: "2023",
@@ -66,7 +66,7 @@ export const galleryImages = [
   {
     id: 9,
     src: "/009.jpg",
-    alt: "Omowunmi Oludipe Oyawemimo Memorial - Pastoral duties",
+    alt: "Omowunmi Oludipe Oyawemimo Memorial - Ministry duties",
     description: "In Service",
     caption: "Omowunmi dedicated to her pastoral responsibilities",
     date: "2022",
@@ -135,10 +135,10 @@ export const galleryImages = [
     caption: "A life well-lived in service to God and mankind",
     date: "2020",
   },
-]
+];
 
 // Function to assign random sizes to images
 export function getRandomSize() {
-  const sizes = ["small", "medium", "large"]
-  return sizes[Math.floor(Math.random() * sizes.length)]
+  const sizes = ["small", "medium", "large"];
+  return sizes[Math.floor(Math.random() * sizes.length)];
 }

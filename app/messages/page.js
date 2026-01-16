@@ -142,7 +142,7 @@ export default function MessagesPage() {
                       {/* Video Thumbnail */}
                       <div className="relative h-80 md:h-[500px] overflow-hidden">
                         <img
-                          src="/PBayo.webp"
+                          src="/omowunmi-profile.webp"
                           alt={featuredSermon.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                         />

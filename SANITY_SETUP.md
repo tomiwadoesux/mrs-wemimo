@@ -9,6 +9,7 @@ This project is configured to use Sanity CMS for managing testimonials and galle
 If you don't have a Sanity account, create one at [sanity.io](https://www.sanity.io)
 
 Then create a new project:
+
 ```bash
 npm create sanity@latest
 ```
@@ -24,6 +25,7 @@ cp .env.local.example .env.local
 ```
 
 Edit `.env.local`:
+
 ```
 NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id_here
 NEXT_PUBLIC_SANITY_DATASET=production
@@ -48,6 +50,7 @@ This will start your Sanity Studio on `http://localhost:3333`
 ### 5. Update Pages to Use Sanity
 
 The new pages are ready to use:
+
 - Replace `/app/testimonials/page.js` with `/app/testimonials/page-with-sanity.js`
 - Replace `/app/gallery/page.js` with `/app/gallery/page-with-sanity.js`
 
@@ -56,13 +59,15 @@ Or keep using the static JavaScript data files if you prefer.
 ## Schema Structure
 
 ### Testimonial
+
 - **name** (string): Person's name
-- **relationship** (string): Relationship to Pastor Bayo
+- **relationship** (string): Relationship to Omowunmi Oludipe Oyawemimo
 - **message** (text): The memory or message
 - **date** (string): Format mm/dd/yy
 - **image** (image): Optional profile picture
 
 ### Gallery
+
 - **title** (string): Image title
 - **image** (image): The photo
 - **caption** (text): Optional description
@@ -80,6 +85,7 @@ Or keep using the static JavaScript data files if you prefer.
 ## Staying with Current Setup
 
 If you prefer to keep using JavaScript data files (no backend needed), you can continue using:
+
 - `/app/testimonials/page.js` (current)
 - `/app/gallery/page.js` (current)
 
